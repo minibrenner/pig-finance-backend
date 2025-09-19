@@ -1,0 +1,25 @@
+# Versão do Docker Compose que estamos usando.
+version: '3.8'
+
+# Nossos serviços (contêineres).
+services:
+  # O nome do nosso serviço de banco de dados.
+  db:
+    image: postgres:16-alpine # A imagem do PostgreSQL que vamos usar (uma versão recente e leve).
+    container_name: pig-finance-db
+    restart: always # Sempre reiniciar o contêiner se ele parar.
+    ports:
+      # Expõe a porta 5432 do contêiner para a porta 5432 da sua máquina.
+      - "5432:5432"
+    environment:
+      # Variáveis de ambiente para configurar o banco de dados.
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=pigfinance
+    volumes:
+      # Garante que os dados do banco de dados não sejam perdidos quando o contêiner for parado.
+      - pgdata:/var/lib/postgresql/data
+
+# Define o volume que será usado para persistir os dados.
+volumes:
+  pgdata:
